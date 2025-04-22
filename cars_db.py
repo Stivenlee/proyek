@@ -3,9 +3,9 @@ from werkzeug.security import generate_password_hash
 from mysql.connector import errorcode
 
 config = {
-    'user': 'root',
-    'password': 'kiritostiven26*', # ganti dengan password sesuai dengan database sendiri
-    'host': 'localhost'
+    'user': 'admin',
+    'password': 'proyekaws2606', # ganti dengan password sesuai dengan database sendiri
+    'host': 'database.c7wec4ugoiuo.us-east-1.rds.amazonaws.com'
 }
 
 try:
