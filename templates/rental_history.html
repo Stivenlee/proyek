@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rental History - Urban_Drive</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles6.css') }}">
+</head>
+<body>
+  <header class="header">
+    <nav class="nav container">
+      <div class="nav__logo">
+        <h2 href="#">Urban_Drive</h2>
+      </div>
+    </nav>
+  </header>
+
+  <section class="history container">
+    <h2>Rental History</h2>
+    <p>Track the history of rental transactions made by members.</p>
+    {% if role == 'admin' %}
+    <form class="filter-form" method="GET" action="{{ url_for('rental_history') }}">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" placeholder="Enter Username" value="{{ request.args.get('username', '') }}" />
+      <button type="submit">Search</button>
+    </form>
+    {% endif %}
+
+    {% if history %}
+    <table class="history__table">
+      <tr>
+        <th>username</th>
+        <th>Rental Date</th>
+        <th>Return Date</th>
+        <th>Total Price</th>
+        <th>Status</th>
+        <th>Car Name</th>
+      </tr>
+      {% for rental in history %}
+      <tr>
+        <td>{{ rental.username }}</td>
+        <td>{{ rental.rental_date }}</td>
+        <td>{{ rental.return_date }}</td>
+        <td>Rp{{ "{:,.2f}".format(rental.total_price) }}</td>
+        <td>{{ rental.status }}</td>
+        <td>{{ rental.car_name }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+    {% else %}
+      <p>No rental history found.</p>
+    {% endif %}
+  </section>
+
+</body>
+</html>

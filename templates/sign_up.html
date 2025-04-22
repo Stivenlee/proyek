@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Urban_Drive | Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles4.css') }}"/>
+  </head>
+  <body>
+    <header class="top-bar">
+      <div class="top-bar__left">
+        <h1>Bergabunglah menjadi anggota  Urban_Drive</h1>
+      </div>
+    </header>
+
+    <main class="form-container">
+      <form action="{{ url_for('sign_up') }}" method="POST">
+
+        <div class="form-group">
+          <label for="username">Username <span class="required">*</span></label>
+          <input
+            type="name"
+            id="username"
+            name="username"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="phone_number">Nomor HP <span class="required">*</span></label>
+          <input
+            type="Phone"
+            id="phone_number" 
+            name="phone_number"
+            placeholder="Enter Your Phone Number"
+            pattern="[0-9]{10,15}"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email <span class="required">*</span></label>
+          <input
+            type="Email"
+            id="email"
+            name="email"
+            placeholder="Enter your email"
+            required
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password <span class="required">*</span></label>
+          <input
+            type="Password"
+            id="password"
+            name="password"
+            placeholder="Create a password"
+            autocomplete="new-password"
+            autofill="off"
+            required
+          />
+        </div>
+
+        <button type="submit" class="submit-btn">Submit</button>
+
+        <div class="already-member">
+          <p>Sudah menjadi member dan memiliki akun Uber_Drive ?<a href="{{ url_for('sign_in') }}">Sign In</a></p>
+        </div>
+      </form>
+    </main>
+
+    <script  src="{{ url_for('static', filename='js/main4.js') }}"></script>
+  </body>
+</html>
+

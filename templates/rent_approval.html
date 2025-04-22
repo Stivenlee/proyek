@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rental Approval - Urban_Drive</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles5.css') }}">
+</head>
+<body>
+
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav__logo">
+                <h1>Urban_Drive</h1>
+            </div>
+        </nav>
+    </header>
+
+    <section class="approval container">
+        <h2>Rental Approval</h2>
+        <p>Approve or Reject Pending Rentals</p>
+
+        {% if pending_rentals %}
+        <table class="approval__table">
+            <tr>
+                <th>Username</th>
+                <th>Car Name</th>
+                <th>Rental Date</th>
+                <th>Return Date</th>
+                <th>Total Price</th>
+                <th>Status</th>
+                <th>Action</th>
+            </tr>
+            {% for rental in pending_rentals %}
+            <tr>
+                <td>{{ rental.username }}</td>
+                <td>{{ rental.car_name }}</td>
+                <td>{{ rental.rental_date }}</td>
+                <td>{{ rental.return_date }}</td>
+                <td>Rp{{ "{:,.2f}".format(rental.total_price) }}</td>
+                <td>{{ rental.status }}</td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="rental_id" value="{{ rental.rental_id }}">
+                        <button type="submit" name="action" value="approve" class="approve-btn">Approve</button>
+                        <button type="submit" name="action" value="reject" class="reject-btn">Reject</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>No pending rentals.</p>
+        {% endif %}
+    </section>
+
+</body>
+</html>

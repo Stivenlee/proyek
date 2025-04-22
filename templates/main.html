@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}"/>
+    <title>Urban_Drive - Car Rental Website</title>
+  </head>
+  <body>
+
+    <header class="header">
+      <nav class="nav container">
+        <div class="nav__logo">
+          <a href="{{ url_for('home') }}">Urban_Drive</a>
+        </div>
+
+        
+        <div class="nav__menu__btn" id="menu-btn">
+          <i class="ri-menu-line"></i>
+        </div>
+
+        
+        <ul class="nav__links" id="nav-links">
+          <li><a href="{{ url_for('sewa') }}">Cars</a></li>
+          
+          {% if "username" in session %}
+            {% if session.get("role") == "admin" %}
+              <li><a href="{{ url_for('rent_approval', status='pending') }}">Rent Approval</a></li>
+            {% endif %}
+            <li><a href="{{ url_for('rental_history') }}">Rental History</a></li>
+            <li><span>Welcome, {{ session["username"] }}!</span></li>
+            <li><a href="{{ url_for('logout') }}" class="btn btn__danger">Log Out</a></li>
+          {% else %}
+            <li><a href="{{ url_for('sign_up') }}" class="btn btn__primary">Sign Up</a></li>
+            <li><a href="{{ url_for('sign_in') }}" class="btn btn__secondary">Sign In</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </header>
+
+    <div class="hero container" id="home">
+      <div class="hero__content">
+        <h1>Ingin menghemat lebih banyak biaya pada mobil sewaan anda?</h1>
+        <p>
+          Temukan pilihan mobil sewaan anda di Urban_Drive di Indonesia dengan Rent a Car. 
+          Pilih dari berbagai pilihan mobil dan penawaran khusus lokal.
+        </p>
+      </div>
+      <div class="hero__image">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Urban_Drive Logo">
+      </div>
+    </div>
+  
+    <section class="steps container" id="rent">
+      <p class="section__subheader">Cara Kerjanya</p>
+      <h2 class="section__header">Urban_Drive mengikuti 2 tahap berupa berikut:</h2>
+      <div class="steps__grid">
+        <div class="steps__card">
+          <span><i class="ri-calendar-check-fill"></i></span>
+          <h4>Tentukan Tanggal pengambilan</h4>
+          <p>
+            Tentukan tanggal dan waktu pengambilan mobil sewaan Anda dengan 
+            opsi penjadwalan yang fleksibel.
+          </p>
+        </div>
+        <div class="steps__card">
+          <span><i class="ri-bookmark-3-fill"></i></span>
+          <h4>Pesan mobil Anda</h4>
+          <p>
+            Jelajahi berbagai kendaraan kami dan pilih 
+            yang paling sesuai dengan kebutuhan Anda.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="service container" id="service">
+      <div class="service__image">
+        <img src="{{ url_for('static', filename='images/Overview.png') }}" alt="service" />
+      </div>
+      <div class="service__content">
+        <p class="section__subheader">Terjamin Pelayanan Terbaik</p>
+        <h2 class="section__header">
+            Rasakan pengalaman terbaik dengan penawaran sewa kami
+        </h2>
+        <ul class="service__list">
+          <li>
+            <span><i class="ri-price-tag-3-fill"></i></span>
+            <div>
+              <h4>Penawaran untuk setiap biaya yang anda miliki ✔</h4>
+              <p>
+                Dari mobil ekonomis hingga kendaraan mewah, kami punya sesuatu untuk semua orang,
+                kami memastikan Anda mendapatkan nilai yang terbaik.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span><i class="ri-wallet-fill"></i></span>
+            <div>
+              <h4>Garansi Harga terbaik ✔</h4>
+              <p>
+                Kami memastikan Anda memperoleh harga yang kompetitif di pasaran, 
+                sehingga Anda dapat memesan dengan yakin.
+              </p>
+            </div>
+          </li>
+          <li>
+            <span><i class="ri-customer-service-fill"></i></span>
+            <div>
+              <h4>Support 24/7 ✔</h4>
+              <p>
+                Tim kami yang berdedikasi siap membantu Anda 24/7 untuk menjawab 
+                pertanyaan atau permasalahan Anda.
+              </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+    
+    <section class="experience container" id="ride">
+      <p class="section__subheader">CUSTOMER EXPERIENCE</p>
+      <h2 class="section__header">
+        Kami memastikan pengalaman pelanggan terbaik
+      </h2>
+      <div class="experience__content">
+        <div class="experience__card">
+          <span><i class="ri-price-tag-3-fill"></i></span>
+          <h4>Penetapan harga yang kompetitif</h4>
+        </div>
+        <div class="experience__card">
+          <span><i class="ri-money-rupee-circle-fill"></i></span>
+          <h4>Sewa Lebih Mudah Sesuai Anggaran Anda</h4>
+        </div>
+        <div class="experience__card">
+          <span><i class="ri-bank-card-fill"></i></span>
+          <h4>Rencana Pembayaran Paling Fleksibel</h4>
+        </div>
+        <div class="experience__card">
+          <span><i class="ri-customer-service-2-fill"></i></span>
+          <h4>Bantuan di tengah Jalan selalu tersedia 24/7</h4>
+        </div>
+      </div>
+    </section>
+
+    <section class="Announcement  container" id="contact">
+      <h2 class="section__header">Tunggu apa lagi? Segera menjadi Member Kami!</h2>
+    </section>
+
+    <footer class="footer">
+      <div class="footer__container container">
+        <div class="footer__col">
+          <h4>Layanan Kami</h4>
+          <ul class="footer__links">
+            <p>Sewa SUV</p>
+            <p>Sewa Sedan</p>
+            <p>Sewa Hatchback</p>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Kontak kami</h4>
+          <ul class="footer__links">
+            <p>No Kantor: 888</p>
+            <p>WhatsApp: 089432117979</p>
+          </ul>
+        </div>
+        <div class="footer__bar container">
+          <h4>Urban_Drive</h4>
+          <ul class="footer__socials">
+            <li><i class="ri-facebook-fill"></i></li>
+            <li><i class="ri-twitter-fill"></i></li>
+            <li><i class="ri-google-fill"></i></li>
+          </ul>
+        </div>
+      </div>
+    </footer>
+    
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+  </body>
+</html>

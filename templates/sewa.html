@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Car Rental - 3 Options</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles2.css') }}"/>
+</head>
+<body>
+    <header>
+        <h1>Mobil yang kami sediakan</h1>
+    </header>
+    <main>
+        <div class="filter-container">
+            <label for="brand-filter">Merek Mobil:</label>
+            <select id="brand-filter" onchange="filterCars()">
+                <option value="all">Semua</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Honda">Honda</option>
+                <option value="Mitsubishi">Mitsubishi</option>
+                <option value="Mercedes-Benz">Mercedes</option>
+                <option value="Daihatsu">Daihatsu</option>
+            </select>
+    
+            <label for="price-filter">Harga Maksimum:</label>
+            <select id="price-filter" onchange="filterCars()">
+                <option value="all">Semua</option>
+                <option value="600000">Rp 600.000</option>
+                <option value="650000">Rp 650.000</option>
+                <option value="800000">Rp 800.000</option>
+            </select>
+    
+            <label for="capacity-filter">Kapasitas Penumpang:</label>
+            <select id="capacity-filter" onchange="filterCars()">
+                <option value="all">Semua</option>
+                <option value="5">5 orang</option>
+                <option value="7">7 orang</option>
+            </select>
+        </div>
+
+        <section class="cards-container">
+            {% for car in cars %}
+            <div class="card" data-brand="{{ car['brand'] }}" data-price="{{ car['price_per_day'] }}" data-capacity="{{ car['capacity'] }}">
+                <img src="{{ url_for('static', filename=car['image_path']) }}" alt="Gambar {{ car['name'] }}">
+                <h2>{{ car['name'] }}</h2>
+                <p><strong>Merek:</strong> {{ car['brand'] }}</p>
+                <p><strong>Kapasitas:</strong> {{ car['capacity'] }} orang</p>
+                <p><strong>Bahan Bakar:</strong> {{ car['fuel_consumption'] }}</p>
+                <p><strong>Harga per Hari:</strong> Rp {{ "{:,.0f}".format(car['price_per_day']) if car['price_per_day'] else "N/A" }}</p>
+                <p><strong>Stock:</strong> {{ car['stock'] }}</p>
+                {% if session.get('role') == 'admin' %}
+                <div class="stock-controls">
+                    <form action="{{ url_for('update_stock') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="car_id" value="{{ car['car_id'] }}">
+                        <input type="hidden" name="action" value="increase">
+                        <button type="submit" class="btn-stock">+</button>
+                    </form>
+                    <form action="{{ url_for('update_stock') }}" method="POST" style="display:inline;">
+                        <input type="hidden" name="car_id" value="{{ car['car_id'] }}">
+                        <input type="hidden" name="action" value="decrease">
+                        <button type="submit" class="btn-stock">−</button>
+                    </form>
+                </div>
+                {% endif %}
+
+                <form action="{{ url_for('rent_car', car_id=car['car_id']) }}" method="POST">
+                    <input type="hidden" name="car_id" value="{{ car['car_id'] }}">
+                    <label for="rental_date">Tanggal Mulai Sewa:</label>
+                    <br>
+                    <input type="date" id="rental_date" name="rental_date" required>
+                    <br>
+                    <label for="return_date">Tanggal Pengembalian:</label>
+                    <br>
+                    <input type="date" id="return_date" name="return_date" required>
+                    <br>
+                    <br>
+                    <button type="submit" class="rent-btn">Sewa</button>
+                </form>
+            </div>
+            {% endfor %}
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='js/main2.js') }}"></script>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                {% for message in messages %}
+                    alert('{{ message.replace("'", "\\'") }}');
+                {% endfor %}
+            </script>
+        {% endif %}
+    {% endwith %}
+
+</body>
+</html>

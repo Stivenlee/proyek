@@ -1,0 +1,66 @@
+.approval {
+  margin: 2rem auto;
+  padding: 1rem;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem; 
+}
+
+.approval h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.approval__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.approval__table th,
+.approval__table td {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.approval__table th {
+  background-color: #f4f4f4;
+}
+
+button {
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  border-radius: 5px;
+}
+
+.approve-btn {
+  background-color: #4CAF50;
+}
+
+.reject-btn {
+  background-color: #f44336;
+}
+
+button:not(:last-child) {
+  margin-right: 10px; 
+}
+
+@media screen and (max-width: 768px) {
+  .approval {
+    padding: 1rem; 
+  }
+
+  .approval__table {
+    font-size: 0.9rem; 
+  }
+
+  button {
+    width: 100%; 
+    margin-bottom: 10px;
+  }
+}

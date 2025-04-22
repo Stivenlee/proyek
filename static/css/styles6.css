@@ -1,0 +1,39 @@
+.history {
+    margin: 2rem auto;
+    padding: 1rem;
+    max-width: 900px;
+  }
+  
+  .history h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .filter-form {
+    margin-bottom: 2rem;
+  }
+  
+  .filter-form label {
+    margin-right: 0.5rem;
+  }
+  
+  .filter-form input {
+    padding: 0.5rem;
+    margin-right: 1rem;
+  }
+  
+  .history__table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .history__table th, .history__table td {
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .history__table th {
+    background-color: #f4f4f4;
+  }
+  
