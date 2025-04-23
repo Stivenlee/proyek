@@ -23,12 +23,15 @@ def home():
 @app.route("/sewa")
 def sewa():
     conn = get_db_connection()
-    cur = conn.cursor(dictionary=True)
+    cur = conn.cursor()
     cur.execute("SELECT * FROM cars")
-    cars = cur.fetchall()
+    columns = [col[0] for col in cur.description]
+    rows = cur.fetchall()
+    cars = [dict(zip(columns, row)) for row in rows]
     cur.close()
     conn.close()
     return render_template("sewa.html", cars=cars)
+
 
 @app.route("/update-stock", methods=["POST"])
 def update_stock():
