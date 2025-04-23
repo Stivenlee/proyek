@@ -1,18 +1,20 @@
-from flask import Flask, render_template, session, request, redirect, url_for, flash, get_flashed_messages
-from flask_mysqldb import MySQL
-from werkzeug.security import generate_password_hash, check_password_hash
+from flask import Flask, render_template, session, request, redirect, url_for, flash
+import mysql.connector 
 from datetime import datetime
 
 app = Flask(__name__)
 
-app.config["MYSQL_USER"] = "admin"
-app.config["MYSQL_PASSWORD"] = "proyekaws2606"
-app.config["MYSQL_HOST"] = "database.c7wec4ugoiuo.us-east-1.rds.amazonaws.com"
-app.config["MYSQL_DB"] = "car_rental_dbs"
-app.config["MYSQL_CURSORCLASS"] = "DictCursor"
 app.secret_key = "secret"
 
-mysql = MySQL(app)
+def get_db_connection():
+    conn = mysql.connector.connect(
+        user="admin",
+        password="proyekaws2606",
+        host="localhost",
+        database="database.c7wec4ugoiuo.us-east-1.rds.amazonaws.com",
+        
+    )
+    return conn
 
 @app.route("/")
 def home():
@@ -20,13 +22,13 @@ def home():
 
 @app.route("/sewa")
 def sewa():
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
     cur.execute("SELECT * FROM cars")
     cars = cur.fetchall()
     cur.close()
+    conn.close()
     return render_template("sewa.html", cars=cars)
-
-from flask import request, redirect, url_for, flash, session
 
 @app.route("/update-stock", methods=["POST"])
 def update_stock():
@@ -37,7 +39,8 @@ def update_stock():
     car_id = request.form.get("car_id")
     action = request.form.get("action")
 
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
     cur.execute("SELECT stock FROM cars WHERE car_id = %s", (car_id,))
     result = cur.fetchone()
 
@@ -50,17 +53,19 @@ def update_stock():
             new_stock = max(0, current_stock - 1) 
         else:
             flash("Aksi tidak dikenali.")
+            cur.close()
+            conn.close()
             return redirect(url_for("sewa"))
 
         cur.execute("UPDATE cars SET stock = %s WHERE car_id = %s", (new_stock, car_id))
-        mysql.connection.commit()
+        conn.commit()
         flash(f"Stok berhasil diubah: sekarang {new_stock}")
     else:
         flash("Mobil tidak ditemukan.")
 
     cur.close()
+    conn.close()
     return redirect(url_for("sewa"))
-
 
 @app.route("/sign-in", methods=["GET", "POST"])
 def sign_in():
@@ -69,26 +74,28 @@ def sign_in():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
         cur.execute("SELECT user_id, username, email, password, role FROM users WHERE username = %s AND email = %s", (username, email))
         user = cur.fetchone()
         cur.close()
+        conn.close()
 
-        
         if not user:
-            cur = mysql.connection.cursor()
+            conn = get_db_connection()
+            cur = conn.cursor(dictionary=True)
             cur.execute("SELECT * FROM users WHERE username = %s", (username,))
             username_check = cur.fetchone()
             cur.close()
+            conn.close()
             if username_check:
                 return render_template("sign_in.html", error_field="email", error_message="Email tidak cocok")
             else:
                 return render_template("sign_in.html", error_field="username", error_message="Username tidak ditemukan")
 
-        if not check_password_hash(user["password"], password):
+        if user["password"] != password:
             return render_template("sign_in.html", error_field="password", error_message="Password salah")
 
-       
         session["user_id"] = user["user_id"]
         session["username"] = user["username"]
         session["role"] = user["role"]
@@ -96,7 +103,6 @@ def sign_in():
 
         return redirect(url_for("home"))
 
-    
     return render_template("sign_in.html")
 
 @app.route("/sign-up", methods=["GET", "POST"])
@@ -107,22 +113,25 @@ def sign_up():
         email = request.form.get("email")
         password = request.form.get("password")
 
-        hashed_password = generate_password_hash(password)
-
-        cur = mysql.connection.cursor()
+        conn = get_db_connection()
+        cur = conn.cursor(dictionary=True)
         cur.execute("SELECT * FROM users WHERE email = %s", (email,))
         existing_user = cur.fetchone()
 
         if existing_user:
+            cur.close()
+            conn.close()
+            flash("Email sudah terdaftar!")
             return redirect(url_for("sign_up"))
 
         cur.execute("""
             INSERT INTO users (username, password, email, phone_number, role) 
             VALUES (%s, %s, %s, %s, 'member')
-        """, (username, hashed_password, email, phone))
+        """, (username, password, email, phone))
         
-        mysql.connection.commit()
+        conn.commit()
         cur.close()
+        conn.close()
 
         return redirect(url_for("sign_in"))
 
@@ -138,12 +147,15 @@ def rent_car():
     rental_date = request.form.get('rental_date')
     return_date = request.form.get('return_date')
 
-    cursor = mysql.connection.cursor()
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
     cursor.execute("SELECT price_per_day, stock FROM cars WHERE car_id = %s", (car_id,))
     car = cursor.fetchone()
 
     if not car or car["stock"] <= 0:
         flash("Maaf, mobil ini sudah habis disewa")
+        cursor.close()
+        conn.close()
         return redirect(url_for('sewa'))
     else:
         flash("Permohonan berhasil")
@@ -160,17 +172,18 @@ def rent_car():
         UPDATE cars SET stock = stock - 1 WHERE car_id = %s
     """, (car_id,))
 
-    mysql.connection.commit()
+    conn.commit()
     cursor.close()
+    conn.close()
     return redirect(url_for("sewa"))
-
 
 @app.route("/rental_history")
 def rental_history():
     if not session.get("user_id"):
         return redirect(url_for("sign_in"))
 
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
 
     username_filter = request.args.get("username", "").strip()
 
@@ -204,16 +217,17 @@ def rental_history():
 
     history = cur.fetchall()
     cur.close()
+    conn.close()
     
     return render_template("rental_history.html", history=history, role=session["role"])
-
 
 @app.route("/rental_approval", methods=["GET", "POST"])
 def rent_approval():
     if session.get("role") != "admin":
         return redirect(url_for("home"))
 
-    cur = mysql.connection.cursor()
+    conn = get_db_connection()
+    cur = conn.cursor(dictionary=True)
 
     if request.method == "POST":
         rental_id = request.form.get("rental_id")
@@ -235,7 +249,7 @@ def rent_approval():
             else:
                 flash("Rental tidak ditemukan!", "danger")
 
-        mysql.connection.commit()
+        conn.commit()
     cur.execute("""
         SELECT rentals.rental_id, users.username, cars.name AS car_name, rentals.rental_date, rentals.return_date, 
                rentals.total_price, rentals.status 
@@ -246,9 +260,9 @@ def rent_approval():
     """)
     pending_rentals = cur.fetchall()
     cur.close()
+    conn.close()
 
     return render_template("rent_approval.html", pending_rentals=pending_rentals)
-
 
 @app.route("/logout")
 def logout():
