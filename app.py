@@ -10,8 +10,8 @@ def get_db_connection():
     conn = mysql.connector.connect(
         user="admin",
         password="proyekaws2606",
-        host="localhost",
-        database="database.c7wec4ugoiuo.us-east-1.rds.amazonaws.com",
+        host="database.c7wec4ugoiuo.us-east-1.rds.amazonaws.com",
+        database="car_rental_dbs",
         
     )
     return conn
