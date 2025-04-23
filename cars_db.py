@@ -81,7 +81,7 @@ try:
         VALUES (%s, %s, %s, %s, %s)
         """
         users_data = [
-            ("Admin", "admin@carrental.com", admin_password, "08123456789", "admin"),
+            ("Admin", "admin@carrental.com", "admin123", "08123456789", "admin"),
         ]
         cursor.executemany(insert_users_query, users_data)
         cnx.commit()
