@@ -101,13 +101,7 @@ try:
         cars_data = [
             ("Toyota Fortuner", "Toyota", 7, "19 liter", "3 koper besar", 600000.00, 5, "images/Fortuner.png"),
             ("Honda CR-V", "Honda", 5, "18 liter", "2 koper besar", 650000.00, 3, "images/Honda CR-V.png"),
-            ("Mitsubishi Pajero", "Mitsubishi", 7, "20 liter", "4 koper besar", 800000.00, 1, "images/Mitsubishi pajero.png"),
-            ("Toyota Camry", "Toyota", 5, "18 liter", "2 koper besar", 500000.00, 4, "images/Toyota Camry.png"),
-            ("Honda Accord", "Honda", 5, "17 liter", "2 koper sedang", 520000.00, 3, "images/Honda Accord.png"),
-            ("Mercedes-Benz C-Class", "Mercedes-Benz", 4, "20 liter", "1 koper besar", 700000.00, 2, "images/Mercedes-Benz C-Class.png"),
-            ("Daihatsu Ayla", "Daihatsu", 5, "16 liter", "1 koper besar", 300000.00, 5, "images/Daihatsu Ayla.png"),
-            ("Toyota Agya", "Toyota", 5, "15 liter", "1 koper sedang", 320000.00, 4, "images/Toyota Agya.png"),
-            ("Honda Jazz", "Honda", 4, "14 liter", "1 koper kecil", 350000.00, 3, "images/Honda Jazz.png")
+            ("Mitsubishi Pajero", "Mitsubishi", 7, "20 liter", "4 koper besar", 800000.00, 1, "images/Mitsubishi pajero.png")
         ]
         cursor.executemany(insert_cars_query, cars_data)
         cnx.commit()
