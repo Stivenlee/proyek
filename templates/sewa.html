@@ -81,6 +81,14 @@
     </main>
 
     <script src="{{ url_for('static', filename='js/main2.js') }}"></script>
-
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <script>
+                {% for message in messages %}
+                    alert('{{ message.replace("'", "\\'") }}');
+                {% endfor %}
+            </script>
+        {% endif %}
+    {% endwith %}
 </body>
 </html>
