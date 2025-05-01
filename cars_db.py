@@ -4,7 +4,7 @@ from mysql.connector import errorcode
 config = {
     'user': 'admin',
     'password': 'proyekaws2606',  # ganti sesuai password MySQL kamu
-    'host': 'database-2.c7wec4ugoiuo.us-east-1.rds.amazonaws.com'
+    'host': 'cardatabase.c7wec4ugoiuo.us-east-1.rds.amazonaws.com'
 }
 
 try:
