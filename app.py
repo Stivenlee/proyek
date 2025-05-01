@@ -7,7 +7,7 @@ app = Flask(__name__)
 app.secret_key = "secret"
 
 # Konfigurasi MySQL
-app.config['MYSQL_HOST'] = 'database-1.c7wec4ugoiuo.us-east-1.rds.amazonaws.com'
+app.config['MYSQL_HOST'] = 'database-2.c7wec4ugoiuo.us-east-1.rds.amazonaws.com'
 app.config['MYSQL_USER'] = 'admin'
 app.config['MYSQL_PASSWORD'] = 'proyekaws2606'
 app.config['MYSQL_DB'] = 'car_rental_dbs'
