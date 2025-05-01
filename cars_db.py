@@ -12,8 +12,8 @@ try:
     cursor = cnx.cursor()
 
     # Buat database jika belum ada
-    cursor.execute("DROP DATABASE IF EXISTS car_rental_dbs")
-    print("Database 'car_rental_dbs' telah dihapus jika ada.")
+    #cursor.execute("DROP DATABASE IF EXISTS car_rental_dbs")
+    #print("Database 'car_rental_dbs' telah dihapus jika ada.")
     cursor.execute("CREATE DATABASE IF NOT EXISTS car_rental_dbs")
     print("Database 'car_rental_dbs' berhasil dibuat atau sudah ada.")
 
